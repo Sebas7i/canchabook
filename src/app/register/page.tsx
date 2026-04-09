@@ -7,7 +7,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const Register: React.FC = () => {
-  const { loginWithGoogle, user } = useAuth();
+  const { loginWithGoogle, loginWithFacebook, user } = useAuth();
   const router = useRouter();
   
   useEffect(() => {
@@ -30,6 +30,19 @@ const Register: React.FC = () => {
       await loginWithGoogle();
     } catch (err: any) {
       setError('Error al registrarse con Google: ' + (err?.message || err));
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFacebookRegister = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await loginWithFacebook();
+    } catch (err: any) {
+      setError('Error al registrarse con Facebook: ' + (err?.message || err));
       console.error(err);
     } finally {
       setLoading(false);
@@ -110,21 +123,39 @@ const Register: React.FC = () => {
             <div className="flex-grow border-t border-gray-100 dark:border-zinc-800"></div>
           </div>
 
-          <button 
-            type="button"
-            onClick={handleGoogleRegister}
-            disabled={loading}
-            className="w-full bg-white dark:bg-zinc-800 border-2 border-gray-100 dark:border-zinc-800 text-gray-700 dark:text-slate-200 py-4 rounded-2xl font-bold text-sm flex items-center justify-center space-x-3 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all active:scale-95 shadow-sm"
-          >
-            {loading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-green-700"></div>
-            ) : (
-              <>
-                <img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" alt="Google" className="w-5 h-5" />
-                <span>Registrarme con Google</span>
-              </>
-            )}
-          </button>
+          <div className="space-y-3">
+            <button 
+              type="button"
+              onClick={handleGoogleRegister}
+              disabled={loading}
+              className="w-full bg-white dark:bg-zinc-800 border-2 border-gray-100 dark:border-zinc-800 text-gray-700 dark:text-slate-200 py-4 rounded-[24px] font-black text-sm flex items-center justify-center space-x-3 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all active:scale-95 shadow-sm"
+            >
+              {loading ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-brand-primary"></div>
+              ) : (
+                <>
+                  <img src="https://www.vectorlogo.zone/logos/google/google-icon.svg" alt="Google" className="w-5 h-5" />
+                  <span>Registrarme con Google</span>
+                </>
+              )}
+            </button>
+
+            <button 
+              type="button"
+              onClick={handleFacebookRegister}
+              disabled={loading}
+              className="w-full bg-[#1877F2] text-white py-4 rounded-[24px] font-black text-sm flex items-center justify-center space-x-3 hover:bg-[#0c63d4] transition-all active:scale-95 shadow-sm"
+            >
+              {loading ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+              ) : (
+                <>
+                  <i className="fab fa-facebook-f text-lg w-5 text-center"></i>
+                  <span>Registrarme con Facebook</span>
+                </>
+              )}
+            </button>
+          </div>
         </form>
 
         <p className="mt-8 text-xs text-gray-500 dark:text-zinc-500 font-medium">

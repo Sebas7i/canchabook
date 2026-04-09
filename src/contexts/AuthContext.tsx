@@ -7,6 +7,7 @@ interface AuthContextType {
   user: UserProfile | null;
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
+  loginWithFacebook: () => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (updatedUser: UserProfile) => Promise<void>;
 }
@@ -136,8 +137,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (error) console.error("Error logging in with Google:", error.message);
   };
 
+  const loginWithFacebook = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    if (error) console.error("Error logging in with Facebook:", error.message);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithFacebook, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
