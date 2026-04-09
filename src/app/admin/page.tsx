@@ -95,9 +95,9 @@ const AdminDashboard: React.FC = () => {
                      <td className="p-6">
                         <div className="flex items-center space-x-4">
                            <div className="w-10 h-10 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary font-black text-xs uppercase shadow-sm">
-                              {res.userName.charAt(0)}
+                              {(res.userName || 'U').charAt(0)}
                            </div>
-                           <span className="font-black text-gray-800 dark:text-slate-200 text-sm">{res.userName}</span>
+                           <span className="font-black text-gray-800 dark:text-slate-200 text-sm">{res.userName || 'Usuario Defecto'}</span>
                         </div>
                      </td>
                      <td className="p-6">
